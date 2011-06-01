@@ -55,7 +55,7 @@ static NSBundle* pluginBundle = nil;
         if (cpuInfo == nil) {
             NSLog(@"ERROR creating CPUInfo object!");            
         }else{
-            [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(refreshGraph) userInfo:nil repeats:YES];       
+            [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(refreshGraph) userInfo:nil repeats:YES];       
             displayImage = [[NSImage alloc] initWithSize:NSMakeSize(GRAPH_SIZE, GRAPH_SIZE)];
             graphImage = [[NSImage alloc] initWithSize:NSMakeSize(GRAPH_SIZE, GRAPH_SIZE)];                   
         }
