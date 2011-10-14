@@ -65,9 +65,9 @@ static NSBundle* pluginBundle = nil;
 }
 
 - (void)dealloc {
-	[super dealloc]; 
     [displayImage release];
     [graphImage release];    
+	[super dealloc];     
 }
 
 - (void)refreshGraph
@@ -75,11 +75,12 @@ static NSBundle* pluginBundle = nil;
 {
 	[cpuInfo refresh];
 	[self drawDelta];
-    NSString *path = [NSString stringWithFormat:@"%@MPCpuGraph.png",NSTemporaryDirectory()];
-	NSBitmapImageRep *rep = [NSBitmapImageRep imageRepWithData:[graphImage TIFFRepresentation]];		
-	NSData *imgdata = [rep representationUsingType:NSPNGFileType properties:nil];    
-	[imgdata writeToFile:path atomically:YES];   
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"MPpluginsEvent" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"showDockImage",@"what",path,@"path",nil]];    
+    NSString *pasteboardName = @"com.vladalexa.MagicPrefs.MPCpuGraph";
+    NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:pasteboardName];
+    [pasteboard clearContents];
+    NSString *details = [NSString stringWithFormat:@"Refreshed at %@",[NSDate date]];
+    [pasteboard writeObjects:[NSArray arrayWithObjects:graphImage,details,nil]];    
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"MPpluginsEvent" object:nil userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"setDockIconFromPasteboard",@"what",pasteboardName,@"name",nil]];    
 }
 
 - (void)drawDelta
